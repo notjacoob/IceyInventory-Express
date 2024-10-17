@@ -26,10 +26,9 @@ export const readFlavors: RequestHandler = async(req: Request, res: Response)=>{
 
 }
 export const readFlavorsId: RequestHandler = async(req: Request, res: Response)=>{
-
     try {
         let flavors;
-        let flavorId = parseInt(req.query.id as string)
+        let flavorId = parseInt(req.params.id as string)
         if (Number.isNaN(flavorId)) {
             throw Error()
         } else {
@@ -48,7 +47,7 @@ export const readFlavorsName: RequestHandler = async(req: Request, res: Response
 
     try {
         let flavors
-        let name = req.query.name as string
+        let name = req.params.name as string
         if (name != '') {
             flavors = await FlavorsDao.readFlavorsName(name)
         } else {
@@ -67,9 +66,9 @@ export const searchFlavorsName: RequestHandler = async(req: Request, res: Respon
 
     try {
         let flavors
-        let searchTerm = req.query.search as string
+        let searchTerm = req.params.search as string
         if (searchTerm != '') {
-            flavors = await FlavorsDao.searchFlavorsName(searchTerm)
+            flavors = await FlavorsDao.searchFlavorsName(`%${searchTerm}%`)
         } else {
             throw new Error()
         }
@@ -121,7 +120,7 @@ export const putFlavors: RequestHandler = async(req: Request, res: Response)=>{
 export const deleteFlavors: RequestHandler = async(req: Request, res: Response)=>{
 
     try {
-        const id = parseInt(req.query.id as string)
+        const id = parseInt(req.body.id as string)
         if (!isNaN(id)) {
             const resp = await FlavorsDao.deleteFlavors(id)
             res.status(200).json(resp)

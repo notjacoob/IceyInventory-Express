@@ -7,10 +7,10 @@ router.route('/v1/flavors')
     ).post(
         FlavorsController.postFlavors
     )
-router.route('/v1/flavors/:flavorId')
     .put(
         FlavorsController.putFlavors
-    ).delete(
+    )
+    .delete(
         FlavorsController.deleteFlavors
     )
 router.route('/v1/flavors/id/:id').get(FlavorsController.readFlavorsId)

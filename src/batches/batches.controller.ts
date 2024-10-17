@@ -27,7 +27,7 @@ export const getBatchesId: RequestHandler = async(req: Request, res: Response) =
     try {
 
         let batches
-        let id = parseInt(req.query.id as string)
+        let id = parseInt(req.params.id as string)
         if (!isNaN(id)) {
             batches = await BatchesDao.getBatchesId(id)
         } else {
@@ -47,10 +47,9 @@ export const getBatchesDate: RequestHandler = async(req: Request, res: Response)
     try {
 
         let batches
-        let date:number|Date = Date.parse(req.query.date as string)
+        let date:Date = new Date(req.params.date as string)
 
-        if (!isNaN(date)) {
-            date = new Date(date)
+        if (date) {
             batches = await BatchesDao.getBatchesDate(date)
         } else {
             throw new Error()
@@ -70,8 +69,9 @@ export const postBatches: RequestHandler = async(req: Request, res: Response) =>
         let batches
         let flavor = req.body.flavorId
         let dateMade:Date|number = Date.parse(req.body.dateMade)
-        let type: Type = Type[req.body.type as keyof typeof Type]
-        if (!isNaN(dateMade) && type) {
+        let type: string = req.body.type
+        console.log(`${flavor}, ${dateMade}, ${type}`)
+        if (!isNaN(dateMade) && Object.values(Type).includes(type)) {
             dateMade = new Date(dateMade)
             batches = await BatchesDao.postBatches(dateMade, type, flavor)
         } else {

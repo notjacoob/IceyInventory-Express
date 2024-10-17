@@ -16,6 +16,6 @@ export const getBatchesDate = async(date: Date) => {
 export const getBatchesId = async(id: number) => {
     return execute<Batches[]>(batchQueries.getBatchesId, [id])
 }
-export const postBatches = async(dateMade: Date, type: Type, flavor: number) => {
+export const postBatches = async(dateMade: Date, type: string, flavor: number) => {
     return execute<OkPacket>(batchQueries.postBatches, [dateMade, type, flavor])
 }

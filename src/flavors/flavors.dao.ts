@@ -1,6 +1,6 @@
 import { OkPacket } from "mysql";
 import { execute } from "../services/mysql.connector";
-import { Flavor } from "./flavors.model";
+import { Flavor, adaptIfUndefined } from "./flavors.model";
 import { flavorQueries } from "./flavors.queries";
 
 // readFlavors, readFlavorsId, readFlavorsName
@@ -23,6 +23,10 @@ export const postFlavors = async (name: string, costPerBatch: number, category: 
     return execute<OkPacket>(flavorQueries.postFlavors, [name, costPerBatch, category])
 }
 export const putFlavors = async (newFlavor: Flavor) => {
+    let oldFlavor = (await readFlavorsId(newFlavor.id))[0]
+    if(oldFlavor) {
+        newFlavor = adaptIfUndefined(oldFlavor, newFlavor)
+    }
     return execute<OkPacket>(flavorQueries.putFlavors, [newFlavor.name, newFlavor.costPerBatch, newFlavor.making, newFlavor.inUse, newFlavor.category_id, newFlavor.id])
 }
 export const deleteFlavors = async (id: number) => {
