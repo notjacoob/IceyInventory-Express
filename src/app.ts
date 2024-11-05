@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import cors from 'cors'
 import batchRouter from './batches/batches.routes'
 import flavorRouter from './flavors/flavors.routes'
+import categoriesRouter from './categories/categories.routes'
 
 dotenv.config()
 
@@ -21,7 +22,7 @@ if (process.env.NODE_ENV == 'development') {
 app.get('/', (req, res) => {
     res.status(200).json({Greeting: "Hello and welcome!"})
 })
-app.use('/', [batchRouter, flavorRouter])
+app.use('/', [batchRouter, flavorRouter, categoriesRouter])
 app.listen(port, () => {
     console.log(`listening at http://localhost:${port}/`)
 })

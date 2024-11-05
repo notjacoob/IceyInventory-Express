@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `iceyinventory`.`inv_category` (
   `name` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS `iceyinventory`.`flavor` (
   CONSTRAINT `fk_flavor_inv_category`
     FOREIGN KEY (`category_id`)
     REFERENCES `iceyinventory`.`inv_category` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 40
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -64,30 +64,10 @@ CREATE TABLE IF NOT EXISTS `iceyinventory`.`flavor_batch` (
   CONSTRAINT `fk_flavor_batch_flavor1`
     FOREIGN KEY (`flavor_id`)
     REFERENCES `iceyinventory`.`flavor` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `iceyinventory`.`flavor_inventory`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `iceyinventory`.`flavor_inventory` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `createdAt` DATE NOT NULL,
-  `inventoryQty` DECIMAL(10,0) NOT NULL,
-  `daySection` ENUM('Start', 'End') NOT NULL,
-  `flavor_id` INT(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_flavor_inventory_flavor1_idx` (`flavor_id` ASC),
-  CONSTRAINT `fk_flavor_inventory_flavor1`
-    FOREIGN KEY (`flavor_id`)
-    REFERENCES `iceyinventory`.`flavor` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
+AUTO_INCREMENT = 119
 DEFAULT CHARACTER SET = utf8;
 
 

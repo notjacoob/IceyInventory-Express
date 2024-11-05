@@ -16,4 +16,5 @@ router.route('/v1/flavors')
 router.route('/v1/flavors/id/:id').get(FlavorsController.readFlavorsId)
 router.route('/v1/flavors/name/:name').get(FlavorsController.readFlavorsName)
 router.route('/v1/flavors/search/:search').get(FlavorsController.searchFlavorsName)
+router.route('/v1/flavors/deleteAssoc').delete(FlavorsController.deleteAssoc)
 export default router

@@ -70,9 +70,9 @@ export const postBatches: RequestHandler = async(req: Request, res: Response) =>
         let flavor = req.body.flavorId
         let dateMade:Date|number = Date.parse(req.body.dateMade)
         let type: string = req.body.type
-        console.log(`${flavor}, ${dateMade}, ${type}`)
         if (!isNaN(dateMade) && Object.values(Type).includes(type)) {
             dateMade = new Date(dateMade)
+            dateMade.setDate(dateMade.getDate()+1)
             batches = await BatchesDao.postBatches(dateMade, type, flavor)
         } else {
             throw new Error()

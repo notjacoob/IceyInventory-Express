@@ -8,6 +8,8 @@ import { Flavor } from './flavors.model'
 import { OkPacket } from 'mysql'
 import * as CategoriesDao from '../categories/categories.dao'
 import * as FlavorsDao from './flavors.dao'
+import * as BatchesDao from '../batches/batches.dao'
+import { Batches } from '../batches/batches.model'
 
 export const readFlavors: RequestHandler = async(req: Request, res: Response)=>{
 
@@ -15,10 +17,12 @@ export const readFlavors: RequestHandler = async(req: Request, res: Response)=>{
         let flavors = await FlavorsDao.readFlavors();
         for (let f of flavors) {
             f.category_id = (await CategoriesDao.getCategoryId(f.category_id as number)).find(c => c)!!
+            f.batches = (await BatchesDao.getBatchesFlavor(f.id))
         }
         res.status(200).json(flavors)
     } catch (err) {
         console.error("[flavors] could not read *")
+        console.error(err)
         res.status(500).json({
             message: "There was an error fetching that data!"
         })
@@ -91,7 +95,6 @@ export const postFlavors: RequestHandler = async(req: Request, res: Response)=>{
             const okPacket = await FlavorsDao.postFlavors(name, costPerBatch, category);
             res.status(200).json(okPacket)
         } else {
-            console.log(`Error: ${name}, ${costPerBatch}, ${category}`)
             res.status(500).json({
                 message: "There was an error parsing the body"
             })
@@ -135,4 +138,32 @@ export const deleteFlavors: RequestHandler = async(req: Request, res: Response)=
         })
     }
 
+}
+/**
+ * deletes all associated batches before deleting the flavor
+ * @param req 
+ * @param res 
+ */
+export const deleteAssoc: RequestHandler = async(req: Request, res:Response) => {
+    try {
+
+        const id = parseInt(req.body.id as string)
+        if (!isNaN(id)) {
+            /*const b = await BatchesDao.getBatchesFlavor(id)
+            const batches: Batches[] = b
+            for (let bb of batches) {
+                await BatchesDao.deleteBatch(bb.id)
+            }*/
+            const resp = await FlavorsDao.deleteFlavors(id)
+            res.status(200).json(resp)
+        } else {
+            throw new Error()
+        }
+
+    } catch (err) {
+        console.error("[flavors] could not read *\n" + err)
+        res.status(500).json({
+            message: "There was an error fetching that data!"
+        })
+    }
 }
