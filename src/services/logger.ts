@@ -12,7 +12,7 @@ export default function logger(req:Request,res:Response,next:NextFunction) {
     const {method,url} = req;
 
     const start = process.hrtime()
-    const startText = `START:${getProcessingTimeInMS(start)}`
+    const startText = `START`
     const idText = `[${id}]`
     const timeStampText = `[${timestamp}]`
 
